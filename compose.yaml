@@ -18,5 +18,22 @@ services:
       retries: 3
       start_period: 10s
 
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "127.0.0.1:4566:4566"
+    environment:
+      LOCALSTACK_AUTH_TOKEN: "${LOCALSTACK_AUTH_TOKEN:?Add your token to .env}"
+      SERVICES: sqs,dynamodb
+      PERSISTENCE: "1"
+      LOCALSTACK_HOST: "localstack:4566"
+      SQS_ENDPOINT_STRATEGY: path
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    volumes:
+      - localstack-data:/var/lib/localstack
+
 volumes:
   cloudpulse-data:
+  localstack-data:
